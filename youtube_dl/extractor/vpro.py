@@ -8,7 +8,10 @@ import hmac
 import re
 
 from .common import InfoExtractor
-
+from ..utils import (
+    strip_or_none,
+    get_element_by_class,
+)
 
 class Vpro3Voor12IE(InfoExtractor):
     _VALID_URL = r'https://3voor12.vpro.nl/speel~(?P<id>\w+)~'
@@ -124,6 +127,7 @@ class Vpro3Voor12IE(InfoExtractor):
 
         return {
             'id': video_id,
-            'title': self._og_search_title(webpage),
+            'title': (self._og_search_title(webpage) or
+                      strip_or_none(get_element_by_class('media-platform-subtitle', webpage))),
             'url': protected_url,
         }
